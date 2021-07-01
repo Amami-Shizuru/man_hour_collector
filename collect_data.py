@@ -1,7 +1,14 @@
 import os
-import datetime
 import pandas as pd
 
+def stripSpace(raw_data):
+    for index, row in raw_data.iterrows():
+        for key, value in row.items():
+            # strip redundant spaces
+            if isinstance(value, str):
+                row[key] = value.strip()
+        raw_data.iloc[index, :] = row
+    return raw_data
 
 def collectDiaryAndWeekly(dir):
     diary_list = []
@@ -22,6 +29,10 @@ def collectDiaryAndWeekly(dir):
     diary.index = [i for i in range(len(diary))]
     weekly.index = [i for i in range(len(weekly))]
     print("Dump data finished!")
+    print("Stripping spaces in dataframe")
+    diary = stripSpace(diary)
+    weekly = stripSpace(weekly)
+    print("Strip spaces success!")
     return diary, weekly
 
 

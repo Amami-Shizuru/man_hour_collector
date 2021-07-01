@@ -44,7 +44,7 @@ def checkDiaryElement(raw_data, date_begin, date_end):
                     raw_data = raw_data.drop(index=index)
                     break
                 else:
-                    raw_data.iloc[index, -1] = addException(raw_data.iloc[index, -1], '异常空值')
+                    row[key] = addException(row[key], '异常空值')
                     break
 
             # check invalid date
@@ -55,7 +55,9 @@ def checkDiaryElement(raw_data, date_begin, date_end):
                 day = int(raw_date[6:])
                 date = datetime.date(year=year, month=month, day=day)
                 if date < date_begin or date > date_end:
-                    raw_data.iloc[index, -1] = addException(raw_data.iloc[index, -1], '日期超出范围')
+                    row[key] = addException(row[key], '日期超出范围')
+
+            raw_data.iloc[index,:] = row
 
     return raw_data
 
